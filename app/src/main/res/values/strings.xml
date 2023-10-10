@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">ReadEase</string>
+
+    <string name="lbl_welcome_onboarding">Welcome to ReadEase,\nyour new reading companion! </string>
+    <string name="lbl_login_hero_title">Welcome back to\nReadEase</string>
+    <string name="lbl_login">Login</string>
+    <string name="lbl_sign_up">Sign Up</string>
+    <string name="hint_enter_email">Please enter your email</string>
+    <string name="hint_enter_password">Please enter your password</string>
+    <string name="hint_enter_name">Your good name please</string>
+    <string name="btn_label_show_password">Show Password</string>
+    <string name="btn_label_hide_password">Hide Password</string>
+    <string name="msg_invalid_email">Invalid Email</string>
+    <string name="msg_double_back_to_exit">Press back again to exit.</string>
+    <string name="msg_validation_password_length">The password needs to consist of at least %1$d characters.</string>
+    <string name="msg_validation_password_char">The password needs to contain at least one letter and digit.</string>
+    <string name="msg_validation_name_special_char">Name cannot contain any special characters.</string>
+    <string name="cd_premium_indicator">Premium Article</string>
+    <string name="cd_logout">Logout</string>
+
+    <string name="lbl_premium_subscription">Premium Subscription</string>
+    <string name="msg_premium_subscription">Premium only articles and other valuable various privileges will be available.</string>
+    <string name="lbl_subscribe">Subscribe</string>
+    <string name="lbl_cancel">Cancel</string>
+    <string name="lbl_apply">Apply</string>
+    <string name="msg_premium_subscribed">Premium subscription applied.</string>
+
+    <string name="msg_rating_applied">Rated %1$.1f</string>
+
+    <string name="cd_rate_article">Rate this article.</string>
+    <string name="cd_back_to_articles_list">Back to article list.</string>
+</resources>
