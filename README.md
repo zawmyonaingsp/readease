@@ -8,7 +8,10 @@ A simple fake sandbox android environment app for [Mixpanel](https://mixpanel.co
 
 Please kindly see the list of screens and screen flow [here](https://whimsical.com/JozHPmjfa4ZeQjhBUpACUE).
 
-[Screen Recording](media/screen_rec.webm)
+### Screen Recording
+
+https://github.com/zawmyonaingsp/readease/assets/122953476/9676e705-0ae3-4431-a3f0-e307e0242744
+
 
 
 
