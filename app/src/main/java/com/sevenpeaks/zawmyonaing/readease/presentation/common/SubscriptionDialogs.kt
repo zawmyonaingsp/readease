@@ -35,3 +35,31 @@ fun SubscriptionDialog(
         },
     )
 }
+
+@Composable
+fun ConfirmUnsubscribe(
+    modifier: Modifier = Modifier,
+    onDismissRequest: () -> Unit = {},
+    onUnsubscribe: () -> Unit,
+) {
+    AlertDialog(
+        modifier = modifier,
+        onDismissRequest = onDismissRequest,
+        title = {
+            Text(text = stringResource(id = R.string.lbl_cancel_premium_subscription))
+        },
+        text = {
+            Text(text = stringResource(id = R.string.msg_confirm_cancel_premium_subscription))
+        },
+        confirmButton = {
+            TextButton(onClick = onUnsubscribe) {
+                Text(text = stringResource(id = R.string.lbl_unsubscribe))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismissRequest) {
+                Text(text = stringResource(id = R.string.lbl_dismiss))
+            }
+        },
+    )
+}

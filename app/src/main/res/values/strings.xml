@@ -18,10 +18,15 @@
     <string name="cd_premium_indicator">Premium Article</string>
     <string name="cd_logout">Logout</string>
 
+    <string name="lbl_cancel_premium_subscription">Cancel Premium Subscription</string>
+    <string name="msg_confirm_cancel_premium_subscription">Are you sure to cancel your premium subscription? You will lose all the premium privileges. This action cannot be undone.</string>
     <string name="lbl_premium_subscription">Premium Subscription</string>
+    <string name="lbl_premium_unsubscribe">Premium Unsubscribe</string>
     <string name="msg_premium_subscription">Premium only articles and other valuable various privileges will be available.</string>
     <string name="lbl_subscribe">Subscribe</string>
+    <string name="lbl_unsubscribe">Unsubscribe</string>
     <string name="lbl_cancel">Cancel</string>
+    <string name="lbl_dismiss">Dismiss</string>
     <string name="lbl_apply">Apply</string>
     <string name="msg_premium_subscribed">Premium subscription applied.</string>
 

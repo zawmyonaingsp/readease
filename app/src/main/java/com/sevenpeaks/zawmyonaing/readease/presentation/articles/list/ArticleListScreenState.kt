@@ -8,4 +8,5 @@ data class ArticleListScreenState(
     val isLoading: Boolean = false,
     val isPremiumUser: Boolean = false,
     val showSubscriptionDialog: Boolean = false,
+    val confirmCancelSubscription: Boolean = false,
 )

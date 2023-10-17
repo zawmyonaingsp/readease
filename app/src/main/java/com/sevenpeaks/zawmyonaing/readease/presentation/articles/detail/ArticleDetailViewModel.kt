@@ -18,11 +18,12 @@ class ArticleDetailViewModel @Inject constructor(
     private val articleRepository: ArticleRepository,
 ) : ViewModel() {
 
-    private val _screenState = MutableStateFlow(ArticleDetailScreenState())
+    private val articleId = saveStateHandle[ARG_ARTICLE_ID] ?: ""
+    private val _screenState = MutableStateFlow(ArticleDetailScreenState(detail = ArticleDetail(id = articleId)))
     val screenState = _screenState.asStateFlow()
 
     init {
-        loadArticleDetail(articleId = saveStateHandle[ARG_ARTICLE_ID] ?: "")
+        loadArticleDetail(articleId = articleId)
     }
 
     private fun loadArticleDetail(articleId: String) {

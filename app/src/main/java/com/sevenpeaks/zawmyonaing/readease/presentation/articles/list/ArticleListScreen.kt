@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.filled.Unsubscribe
 import androidx.compose.material.icons.filled.WorkspacePremium
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,6 +25,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import com.sevenpeaks.zawmyonaing.readease.R
+import com.sevenpeaks.zawmyonaing.readease.analytics.compose.TrackScreenViewEvent
+import com.sevenpeaks.zawmyonaing.readease.analytics.events.AppAnalytics
+import com.sevenpeaks.zawmyonaing.readease.presentation.common.ConfirmUnsubscribe
 import com.sevenpeaks.zawmyonaing.readease.presentation.common.SubscriptionDialog
 import com.sevenpeaks.zawmyonaing.readease.ui.theme.spacingMedium
 import kotlinx.collections.immutable.PersistentList
@@ -38,13 +42,25 @@ fun ArticleListScreen(
     onClickedSubscribeToPremium: () -> Unit,
     onPremiumSubscribe: () -> Unit,
     onDismissSubscriptionDialog: () -> Unit,
+    onClickedUnsubscribePremium: () -> Unit,
+    onPremiumUnsubscribed: () -> Unit,
+    onDismissUnsubscribeConfirmDialog: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+
+    TrackScreenViewEvent(name = AppAnalytics.EVENT_SCREEN_VIEW_ARTICLE_LIST)
 
     if (state.showSubscriptionDialog) {
         SubscriptionDialog(
             onDismissRequest = onDismissSubscriptionDialog,
-            onSubscribe = { onPremiumSubscribe() },
+            onSubscribe = onPremiumSubscribe,
+        )
+    }
+
+    if (state.confirmCancelSubscription) {
+        ConfirmUnsubscribe(
+            onDismissRequest = onDismissUnsubscribeConfirmDialog,
+            onUnsubscribe = onPremiumUnsubscribed
         )
     }
 
@@ -70,6 +86,13 @@ fun ArticleListScreen(
                             Icon(
                                 imageVector = Icons.Filled.WorkspacePremium,
                                 contentDescription = stringResource(id = R.string.lbl_premium_subscription),
+                            )
+                        }
+                    } else {
+                        IconButton(onClick = onClickedUnsubscribePremium) {
+                            Icon(
+                                imageVector = Icons.Filled.Unsubscribe,
+                                contentDescription = stringResource(id = R.string.lbl_premium_unsubscribe),
                             )
                         }
                     }

@@ -12,8 +12,11 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.sevenpeaks.zawmyonaing.readease.R
+import com.sevenpeaks.zawmyonaing.readease.analytics.AnalyticsManager
+import com.sevenpeaks.zawmyonaing.readease.analytics.events.AppAnalytics
 import com.sevenpeaks.zawmyonaing.readease.presentation.articles.detail.ArticleDetailScreen
 import com.sevenpeaks.zawmyonaing.readease.presentation.articles.detail.ArticleDetailViewModel
+import timber.log.Timber
 
 object ArticleDetailDestination : Destination(
     label = "article_detail",
@@ -45,6 +48,7 @@ fun NavGraphBuilder.articleDetailScreen(
         ArticleDetailScreen(
             state = screenState,
             onRatingApplied = { rating ->
+                trackRatingAction(rating,screenState.detail.id)
                 Toast.makeText(
                     context,
                     context.getString(R.string.msg_rating_applied, rating),
@@ -54,6 +58,21 @@ fun NavGraphBuilder.articleDetailScreen(
             onNavigateUp = navHostController::popBackStack
         )
     }
+}
+
+private fun trackRatingAction(rating: Float, articleId: String) {
+    Timber.d("trackRatingAction() called with: rating = [$rating], articleId = [$articleId]")
+    AnalyticsManager.incrementUserProperty(
+        name = AppAnalytics.USER_LIFETIME_ARTICLE_RATES_COUNT,
+        value = 1.0
+    )
+    AnalyticsManager.logEvent(
+        eventName = AppAnalytics.ACTION_RATE_ARTICLE,
+        params = mapOf(
+            AppAnalytics.PARAM_ARTICLE_ID to articleId,
+            AppAnalytics.PARAM_ARTICLE_RATING to rating,
+        )
+    )
 }
 
 fun NavHostController.navigateToArticleDetailScreen(

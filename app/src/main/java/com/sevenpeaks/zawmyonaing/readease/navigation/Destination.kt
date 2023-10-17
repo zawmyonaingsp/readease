@@ -47,5 +47,13 @@ sealed class Destination(
                 append(args.joinToString("&", transform = { "$it={$it}" }))
             }
         }.toString()
+
+        val all = listOf(
+            OnboardingDestination,
+            LoginDestination,
+            SignUpDestination,
+            ArticleListDestination,
+            ArticleDetailDestination,
+        )
     }
 }

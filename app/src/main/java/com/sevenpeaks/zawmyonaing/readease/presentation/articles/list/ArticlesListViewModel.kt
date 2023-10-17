@@ -2,6 +2,7 @@ package com.sevenpeaks.zawmyonaing.readease.presentation.articles.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sevenpeaks.zawmyonaing.readease.analytics.AnalyticsManager
 import com.sevenpeaks.zawmyonaing.readease.domain.repository.ArticleRepository
 import com.sevenpeaks.zawmyonaing.readease.domain.repository.PreferenceRepository
 import com.sevenpeaks.zawmyonaing.readease.utils.kotlin.CoroutineDispatcherProvider
@@ -75,7 +76,7 @@ class ArticlesListViewModel @Inject constructor(
     fun checkArticleAccess(article: ArticleItem): Boolean {
         val isPremiumUser = userFlow.value?.premiumSubscribed == true
         val hasAccess = isPremiumUser || !article.isPremium
-        if (!hasAccess){
+        if (!hasAccess) {
             _screenState.update { it.copy(showSubscriptionDialog = true) }
             pendingArticle = article
         }
@@ -89,6 +90,17 @@ class ArticlesListViewModel @Inject constructor(
                 _screenState.update { it.copy(showSubscriptionDialog = false) }
                 _premiumSubscribeStatus.update { triggered }
             }
+            AnalyticsManager.premiumSubscribe()
+        }
+    }
+
+    fun unsubscribePremium() {
+        viewModelScope.launch {
+            with(preferenceRepository) {
+                getUser()?.let { setUser(it.copy(premiumSubscribed = false)) }
+                _screenState.update { it.copy(confirmCancelSubscription = false) }
+            }
+            AnalyticsManager.premiumUnsubscribe()
         }
     }
 
@@ -100,18 +112,27 @@ class ArticlesListViewModel @Inject constructor(
         _screenState.update { it.copy(showSubscriptionDialog = false) }
     }
 
-    fun logout(){
+    fun onClickedUnsubscribe() {
+        _screenState.update { it.copy(confirmCancelSubscription = true) }
+    }
+
+    fun onDismissUnsubscribeConfirmDialog() {
+        _screenState.update { it.copy(confirmCancelSubscription = false) }
+    }
+
+    fun logout() {
         viewModelScope.launch {
             preferenceRepository.setUser(null)
             _logoutCompletionStatus.update { triggered }
+            AnalyticsManager.signOut()
         }
     }
 
-    fun onLogoutStatusConsumed(){
+    fun onLogoutStatusConsumed() {
         _logoutCompletionStatus.update { consumed }
     }
 
-    fun onPremiumSubscribeStatusConsumed(){
+    fun onPremiumSubscribeStatusConsumed() {
         _premiumSubscribeStatus.update { consumed }
     }
 }

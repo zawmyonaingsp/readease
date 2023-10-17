@@ -15,6 +15,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.compose.rememberNavController
 import com.sevenpeaks.zawmyonaing.readease.R
 import com.sevenpeaks.zawmyonaing.readease.domain.repository.PreferenceRepository
@@ -24,6 +26,7 @@ import com.sevenpeaks.zawmyonaing.readease.navigation.OnboardingDestination
 import com.sevenpeaks.zawmyonaing.readease.navigation.graphs.RootNavGraph
 import com.sevenpeaks.zawmyonaing.readease.ui.theme.ReadEaseTheme
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -47,8 +50,10 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     var entryDestination by remember { mutableStateOf<Destination?>(null) }
+                    val navHostController = rememberNavController()
 
                     LaunchedEffect(Unit) {
+                        navHostController.addOnDestinationChangedListener(::onDestinationChanged)
                         val user = preferenceRepository.getUser()
                         entryDestination =
                             if (user != null) ArticleListDestination else OnboardingDestination
@@ -56,7 +61,7 @@ class MainActivity : ComponentActivity() {
 
                     entryDestination?.let {
                         RootNavGraph(
-                            navHostController = rememberNavController(),
+                            navHostController = navHostController,
                             startDestination = it
                         )
                     }
@@ -73,6 +78,26 @@ class MainActivity : ComponentActivity() {
         } else {
             lastBackPressTime = currentTime
             Toast.makeText(this, R.string.msg_double_back_to_exit, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun onDestinationChanged(
+        controller: NavController,
+        destination: NavDestination,
+        arguments: Bundle?
+    ) {
+
+        with(destination) {
+            Timber.d("onDestinationChanged: Label = $label")
+            Timber.d("onDestinationChanged: Route = $route")
+            Timber.d("onDestinationChanged: Display Name = $displayName")
+            Timber.d("onDestinationChanged: ID = $id")
+        }
+
+        arguments?.let {
+            it.keySet()?.forEach { key ->
+                Timber.d("onDestinationChanged: Argument $key : ${it.get(key)}")
+            }
         }
     }
 

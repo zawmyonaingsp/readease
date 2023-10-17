@@ -37,6 +37,9 @@ import androidx.compose.ui.unit.dp
 import com.gowtham.ratingbar.RatingBar
 import com.gowtham.ratingbar.RatingBarStyle
 import com.sevenpeaks.zawmyonaing.readease.R
+import com.sevenpeaks.zawmyonaing.readease.analytics.AnalyticsManager
+import com.sevenpeaks.zawmyonaing.readease.analytics.compose.TrackTimingScreenViewEvent
+import com.sevenpeaks.zawmyonaing.readease.analytics.events.AppAnalytics
 import com.sevenpeaks.zawmyonaing.readease.presentation.common.RatingDialog
 import com.sevenpeaks.zawmyonaing.readease.ui.theme.spacingExtraLarge
 import com.sevenpeaks.zawmyonaing.readease.ui.theme.spacingLarge
@@ -44,6 +47,9 @@ import com.sevenpeaks.zawmyonaing.readease.ui.theme.spacingMedium
 import com.sevenpeaks.zawmyonaing.readease.ui.theme.spacingSmall
 import com.sevenpeaks.zawmyonaing.readease.ui.widgets.ThemedPreview
 import com.sevenpeaks.zawmyonaing.readease.utils.android.compose.preview.UiModePreviews
+import com.sevenpeaks.zawmyonaing.readease.utils.kotlin.DateTimeFormat
+import com.sevenpeaks.zawmyonaing.readease.utils.kotlin.currentUTCTime
+import com.sevenpeaks.zawmyonaing.readease.utils.kotlin.format
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,6 +60,28 @@ fun ArticleDetailScreen(
     onNavigateUp: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+
+    TrackTimingScreenViewEvent(
+        name = AppAnalytics.EVENT_SCREEN_VIEW_ARTICLE_DETAIL,
+        params = mapOf(
+            AppAnalytics.PARAM_ARTICLE_ID to state.detail.id,
+        ),
+        additionalAction = {
+            val nowUTC = currentUTCTime.format(DateTimeFormat.server_date_time)
+            AnalyticsManager.setUserPropertyOnce(
+                AppAnalytics.USER_FIRST_ARTICLE_READ_TIMESTAMP,
+                nowUTC
+            )
+            AnalyticsManager.incrementUserProperty(
+                AppAnalytics.USER_LIFETIME_ARTICLE_READ_COUNT,
+                1.0
+            )
+            AnalyticsManager.setUserProperty(
+                AppAnalytics.USER_LAST_ARTICLE_READ_TIMESTAMP,
+                nowUTC
+            )
+        }
+    )
 
     Scaffold(
         modifier = modifier

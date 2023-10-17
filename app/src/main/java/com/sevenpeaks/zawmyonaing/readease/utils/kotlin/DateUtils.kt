@@ -1,26 +1,49 @@
 package com.sevenpeaks.zawmyonaing.readease.utils.kotlin
 
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
-fun Date.format(format: DateTimeFormat, locale: Locale = Locale.ENGLISH): String {
+fun Date.format(
+    format: DateTimeFormat,
+    timeZone: TimeZone? = null,
+    locale: Locale = Locale.ENGLISH
+): String {
     val sdf = SimpleDateFormat(format.pattern, locale)
+    timeZone?.let { sdf.timeZone = it }
     return sdf.format(this)
 }
 
-fun String.asDate(format: DateTimeFormat, locale: Locale = Locale.ENGLISH): Date? {
+fun String.asDate(
+    format: DateTimeFormat,
+    timeZone: TimeZone? = null,
+    locale: Locale = Locale.ENGLISH
+): Date? {
     val sdf = SimpleDateFormat(format.pattern, locale)
+    timeZone?.let { sdf.timeZone = it }
     return if (isBlank()) null else runCatching { sdf.parse(this) }.getOrNull()
 }
 
-fun Long.asFormattedDate(format: DateTimeFormat, locale: Locale = Locale.ENGLISH): String? {
+fun Long.asFormattedDate(
+    format: DateTimeFormat,
+    timeZone: TimeZone? = null,
+    locale: Locale = Locale.ENGLISH
+): String? {
     return if (this > 0) {
-        Date(this).format(format, locale)
+        Date(this).format(format, timeZone, locale)
     } else {
         null
     }
 }
+
+val currentUTCTime: Date
+    get() {
+        val timeZone = TimeZone.getTimeZone("UTC")
+        val calendar = Calendar.getInstance(timeZone)
+        return calendar.time
+    }
 
 @JvmInline
 value class DateTimeFormat private constructor(val pattern: String) {

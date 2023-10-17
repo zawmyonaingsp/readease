@@ -2,6 +2,8 @@ package com.sevenpeaks.zawmyonaing.readease.presentation.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sevenpeaks.zawmyonaing.readease.analytics.AnalyticsManager
+import com.sevenpeaks.zawmyonaing.readease.analytics.events.AppAnalytics
 import com.sevenpeaks.zawmyonaing.readease.domain.model.User
 import com.sevenpeaks.zawmyonaing.readease.domain.repository.PreferenceRepository
 import com.sevenpeaks.zawmyonaing.readease.domain.usecase.validations.ValidateEmail
@@ -100,6 +102,10 @@ class SignUpViewModel @Inject constructor(
             preferenceRepository.setUser(user)
             _signUpScreenStateFlow.update { it.copy(isLoading = false) }
             _signUpSuccessEvent.update { triggered }
+            with(AnalyticsManager){
+                signIn(email = state.email, userName = state.name)
+                logEvent(eventName = AppAnalytics.ACTION_SIGN_UP)
+            }
         }
     }
 

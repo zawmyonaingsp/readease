@@ -33,6 +33,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.sevenpeaks.zawmyonaing.readease.R
+import com.sevenpeaks.zawmyonaing.readease.analytics.compose.TrackScreenViewEvent
+import com.sevenpeaks.zawmyonaing.readease.analytics.events.AppAnalytics
 import com.sevenpeaks.zawmyonaing.readease.presentation.common.ScreenHeroText
 import com.sevenpeaks.zawmyonaing.readease.ui.theme.spacingExtraLarge
 import com.sevenpeaks.zawmyonaing.readease.ui.theme.spacingMedium
@@ -48,6 +50,9 @@ fun SignUpScreen(
     onPasswordChanged: (String) -> Unit,
     onClickedSignUp: () -> Unit,
 ) {
+
+    TrackScreenViewEvent(name = AppAnalytics.EVENT_SCREEN_VIEW_SIGN_UP)
+
     SignUpUI(
         modifier = modifier.fillMaxSize(),
         name = signUpScreenState.name,

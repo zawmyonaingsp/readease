@@ -5,6 +5,7 @@ plugins {
     id("kotlin-parcelize")
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -22,6 +23,10 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        properties.forEach { (k, v) -> println("$k -> $v") }
+
+//        buildConfigField("String","TOKEN_MIXPANEL","\"${project.properties.}\"")
     }
 
     buildTypes {
@@ -42,6 +47,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.3"
@@ -67,7 +73,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.material:material-icons-extended-android:1.5.2")
+    implementation("androidx.compose.material:material-icons-extended-android:1.5.3")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
@@ -91,6 +97,8 @@ dependencies {
     implementation("com.jakewharton.timber:timber:5.0.1")
     implementation("com.github.leonard-palm:compose-state-events:2.0.3")
     implementation("com.github.a914-gowtham:compose-ratingbar:1.3.6")
+
+    implementation("com.mixpanel.android:mixpanel-android:7.3.2")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

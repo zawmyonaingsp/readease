@@ -58,6 +58,9 @@ fun NavGraphBuilder.articleListScreen(
             onPremiumSubscribe = viewModel::subscribeToPremium,
             onClickedSubscribeToPremium = viewModel::onClickedSubscribeToPremium,
             onDismissSubscriptionDialog = viewModel::onDismissSubscriptionDialog,
+            onPremiumUnsubscribed = viewModel::unsubscribePremium,
+            onClickedUnsubscribePremium = viewModel::onClickedUnsubscribe,
+            onDismissUnsubscribeConfirmDialog = viewModel::onDismissUnsubscribeConfirmDialog
         )
     }
 }

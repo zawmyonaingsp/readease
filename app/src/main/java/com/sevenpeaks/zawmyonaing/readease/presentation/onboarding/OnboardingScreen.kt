@@ -13,6 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.sevenpeaks.zawmyonaing.readease.R
+import com.sevenpeaks.zawmyonaing.readease.analytics.compose.TrackScreenViewEvent
+import com.sevenpeaks.zawmyonaing.readease.analytics.events.AppAnalytics
 import com.sevenpeaks.zawmyonaing.readease.presentation.common.ScreenHeroText
 import com.sevenpeaks.zawmyonaing.readease.ui.theme.spacingExtraLarge
 import com.sevenpeaks.zawmyonaing.readease.ui.theme.spacingMedium
@@ -25,6 +27,9 @@ fun OnboardingScreen(
     onClickedSignUp: () -> Unit,
     onClickedLogin: () -> Unit,
 ) {
+
+    TrackScreenViewEvent(name = AppAnalytics.EVENT_SCREEN_VIEW_ONBOARDING)
+
     OnboardingUI(
         modifier = modifier.fillMaxSize(),
         onClickedSignUp = onClickedSignUp,
